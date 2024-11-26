@@ -9,19 +9,6 @@
     <h1>Music Sync Client</h1>
     <audio id="audio" controls></audio>
     <script>
-        const serverOptions = {
-            key: fs.readFileSync('private-key.key'),  // Path to your private key
-            cert: fs.readFileSync('certificate.crt') // Path to your certificate
-        };
-
-        // Create HTTPS server with WebSocket support
-        const httpsServer = https.createServer(serverOptions);
-        const wss = new WebSocket.Server({ server: httpsServer });
-
-        // Start the server
-        httpsServer.listen(7070, () => {
-            console.log('WebSocket server running at wss://localhost:7070');
-        });
 
         let socket;
         const audio = document.getElementById('audio');
