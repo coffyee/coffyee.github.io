@@ -17,7 +17,7 @@
         const serverIp = prompt("Enter the server IP address (e.g., 192.168.1.84):");
 
         if (serverIp) {
-            const wsUrl = `ws://${serverIp}:7070`;
+            const wsUrl = `wss://${serverIp}:7070`;
             console.log(`Connecting to WebSocket server at ${wsUrl}`);
             socket = new WebSocket(wsUrl);
 
