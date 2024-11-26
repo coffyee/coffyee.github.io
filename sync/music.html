@@ -14,7 +14,7 @@
         let filePath;
 
         // Prompt user for IP address
-        const serverIp = prompt("Enter the server IP address (e.g., 192.168.1.84):");
+        const serverIp = prompt("Enter the server IP address (e.g., 192.168.1.84):", "192.168.1.84");
 
         if (serverIp) {
             const wsUrl = `ws://${serverIp}:7070`;
