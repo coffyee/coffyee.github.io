@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Music Sync Client</title>
+</head>
+
+<body>
+    <h1>Music Sync Client</h1>
+    <audio id="audio" controls></audio>
+    <script>
+        const socket = new WebSocket('ws://192.168.1.84:8080'); // Update to your server IP
+        const audio = document.getElementById('audio');
+        var filePath;
+
+
+        socket.onmessage = async (event) => {
+            const data = JSON.parse(event.data);
+
+
+            if (data.type === 'click') {
+                try {
+
+                    // Set the audio source if it has changed
+                    if (data.filePath !== filePath) {
+                        audio.src = data.url;
+                        filePath = data.filePath;
+                        await audio.load();
+                    }
+
+                    console.log('Source of audio', audio.src);
+
+                } catch (error) {
+                    console.error('Select audio failed:', error);
+                }
+            }
+            else {
+                if (data.filePath !== filePath) {
+                    audio.src = data.url;
+                    filePath = data.filePath;
+                    await audio.load();
+                    console.log('------ i am not here on sync');
+                }
+
+                if (data.type === 'sync') {
+                    try {
+                        // Set the audio source if it has changed
+
+
+                        console.log('Syncing Source of audio', audio.src);
+
+                        // Calculate the sync position in seconds
+                        const syncPosition = data.position / 1000; // Convert milliseconds to seconds
+                        console.log(`Sync position: ${syncPosition}s, Current time: ${audio.currentTime}s`);
+
+                        // Set the current playback position
+                        audio.currentTime = syncPosition;
+                        console.log(`Updated playback position to: ${syncPosition}s`);
+
+
+                        // Ensure playback starts only if the audio is paused
+                        if (audio.paused) {
+                            await audio.play();
+                            console.log('Playback started at synced position.');
+                        }
+                    } catch (error) {
+                        console.error('Playback sync failed:', error);
+                    }
+                }
+                else {
+                    try {
+                        if (data.type === 'play') {
+                            if (audio.paused)
+                                await audio.play();
+                            console.log('Playing Song');
+
+                        }
+                        else if (data.type === 'pause') {
+                            await audio.pause();
+                            console.log('Paused Song');
+                        }
+
+                    } catch (error) {
+                        console.error('Play/Paused Failed', error);
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
