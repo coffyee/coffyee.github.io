@@ -27,7 +27,7 @@ const DEVICE_IP = getLocalIPAddress();
 // console.log(`Device IP Address: ${DEVICE_IP}`);
 
 // Serve static files (e.g., index.html)
-app.use(express.static('public'));
+app.use(express.static('docs'));
 
 // Add the /get-ip endpoint
 app.get('/get-ip', (req, res) => {
@@ -35,7 +35,7 @@ app.get('/get-ip', (req, res) => {
 });
 
 app.get('/flutter-logs', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'logs.html'));
+    res.sendFile(path.join(__dirname, 'docs', 'logs.html'));
 });
 
 // Start the HTTP server
